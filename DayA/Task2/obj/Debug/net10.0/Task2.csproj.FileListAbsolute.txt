@@ -1,0 +1,15 @@
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/bin/Debug/net10.0/Task2
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/bin/Debug/net10.0/Task2.deps.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/bin/Debug/net10.0/Task2.runtimeconfig.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/bin/Debug/net10.0/Task2.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/bin/Debug/net10.0/Task2.pdb
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.GeneratedMSBuildEditorConfig.editorconfig
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.AssemblyInfoInputs.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.AssemblyInfo.cs
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.csproj.CoreCompileInputs.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.sourcelink.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/refint/Task2.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.pdb
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/Task2.genruntimeconfig.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task2/obj/Debug/net10.0/ref/Task2.dll

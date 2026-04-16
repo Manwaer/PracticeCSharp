@@ -1,0 +1,15 @@
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/bin/Debug/net10.0/Task6
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/bin/Debug/net10.0/Task6.deps.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/bin/Debug/net10.0/Task6.runtimeconfig.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/bin/Debug/net10.0/Task6.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/bin/Debug/net10.0/Task6.pdb
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.GeneratedMSBuildEditorConfig.editorconfig
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.AssemblyInfoInputs.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.AssemblyInfo.cs
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.csproj.CoreCompileInputs.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.sourcelink.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/refint/Task6.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.pdb
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/Task6.genruntimeconfig.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task6/obj/Debug/net10.0/ref/Task6.dll

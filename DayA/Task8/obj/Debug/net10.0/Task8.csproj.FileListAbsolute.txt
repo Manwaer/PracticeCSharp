@@ -1,0 +1,15 @@
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.GeneratedMSBuildEditorConfig.editorconfig
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.AssemblyInfoInputs.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.AssemblyInfo.cs
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.csproj.CoreCompileInputs.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.sourcelink.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/bin/Debug/net10.0/Task8
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/bin/Debug/net10.0/Task8.deps.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/bin/Debug/net10.0/Task8.runtimeconfig.json
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/bin/Debug/net10.0/Task8.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/bin/Debug/net10.0/Task8.pdb
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/refint/Task8.dll
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.pdb
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/Task8.genruntimeconfig.cache
+/home/admin/Документы/GitHub/PracticeCSharp/DayA/Task8/obj/Debug/net10.0/ref/Task8.dll
