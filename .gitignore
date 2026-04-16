@@ -1,1 +1,32 @@
+gitignore
 
+# Rider files
+.idea/
+*.sln.iml
+*.idea/
+# Игнорировать специфичные папки пользователей, если они есть
+.idea/shelf/
+.idea/workspace.xml
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.userossc
+*.sln.docstates
+*.csproj.user
+
+# NuGet
+packages/
+*.nupkg
+
+# IDE-specific
+.vs/
+.settings/
+.cache/
+
+# System
+.DS_Store
+Thumbs.db
