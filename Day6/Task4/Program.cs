@@ -11,6 +11,6 @@ class Program
         MessageNotifier notifier = new MessageNotifier(desktop, sound);
         notifier.Subscribe(chat);
 
-        chat.ReceiveMessage("Админ", "Добро пожаловать в чат!");
+        chat.ReceiveMessage("Сигма", "Добро пожаловать в чат!");
     }
 }

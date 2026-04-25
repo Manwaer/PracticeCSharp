@@ -11,7 +11,11 @@ class Program
         
         downloader.DownloadProgress += bar.OnProgressChanged;
         downloader.DownloadProgress += logger.LogProgress;
-
+        
+        Console.WriteLine("Начало загрузки файла ");
+        
         downloader.StartDownload();
+        
+        Console.WriteLine("Конец загрузки файла");
     }
 }
