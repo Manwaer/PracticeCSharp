@@ -8,7 +8,7 @@ class Program
 
         try
         {
-            thermostat.CheckTemperature(85);
+            Console.WriteLine(thermostat.CheckTemperature(85));
             thermostat.CheckTemperature(120);
         }
         catch (OverheatException ex)
