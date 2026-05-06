@@ -1,0 +1,28 @@
+﻿<Window x:Class="OnlineShop.CreateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineShop"
+        mc:Ignorable="d"
+        Title="CreateWindow" Height="285" Width="400">
+    <StackPanel Margin="15">
+        <TextBlock Text="Клиент:" Margin="0,0,0,5"/>
+        <TextBox x:Name="TxtClient" Margin="0,0,0,10" Padding="3"/>
+
+        <TextBlock Text="Сумма:" Margin="0,0,0,5"/>
+        <TextBox x:Name="TxtAmount" Margin="0,0,0,10" Padding="3"/>
+
+        <TextBlock Text="Статус:" Margin="0,0,0,5"/>
+        <ComboBox x:Name="CbStatus" Margin="0,0,0,20" Padding="3">
+            <ComboBoxItem Content="Новый"/>
+            <ComboBoxItem Content="Оплачен"/>
+            <ComboBoxItem Content="Доставлен"/>
+        </ComboBox>
+
+        <UniformGrid Columns="2">
+            <Button Content="Сохранить" Click="OnSaveClick" Margin="0,0,5,0" Background="#4CAF50" Foreground="White"/>
+            <Button Content="Отмена" Click="OnCancelClick" Margin="5,0,0,0"/>
+        </UniformGrid>
+    </StackPanel>
+</Window>
