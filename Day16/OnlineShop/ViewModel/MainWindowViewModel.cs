@@ -26,15 +26,18 @@ namespace OnlineShop.ViewModel
         private string _chatLog;
         public string ChatLog { get => _chatLog; set { _chatLog = value; OnPropertyChanged(nameof(ChatLog)); } }
 
+        private string _chatInput;
+        public string ChatInput { get => _chatInput; set { _chatInput = value; OnPropertyChanged(nameof(ChatInput)); } }
+
         public ICommand AddOrderCommand { get; }
         public ICommand EditOrderCommand { get; }
         public ICommand DeleteOrderCommand { get; }
+        public ICommand SendChatCommand { get; }
 
         private readonly ChatService _chatService;
 
         public MainWindowViewModel()
         {
-            // Загрузка данных из JSON
             Orders = new ObservableCollection<Order>(StoreService.Load());
             OrdersView = CollectionViewSource.GetDefaultView(Orders);
             OrdersView.Filter = obj =>
@@ -43,7 +46,6 @@ namespace OnlineShop.ViewModel
                 return (obj as Order)?.Status == SelectedStatusFilter;
             };
 
-            // Инициализация чата (Named Pipes Server)
             _chatService = new ChatService();
             _chatService.OnMessageReceived += (msg) =>
             {
@@ -51,21 +53,19 @@ namespace OnlineShop.ViewModel
             };
             _chatService.StartListening();
 
-            // Команда добавления
             AddOrderCommand = new RelayCommand(async obj =>
             {
                 var win = new CreateWindow(this);
                 if (win.ShowDialog() == true)
                 {
                     IsBusy = true;
-                    await Task.Delay(3000); // Имитация обработки
-                    StoreService.Save(Orders); // Сохранение в JSON
-                    StoreService.SendMmfNotify("OrderCreated"); // Уведомление через MMF
+                    await Task.Delay(3000);
+                    StoreService.Save(Orders);
+                    StoreService.SendMmfNotify("OrderCreated");
                     IsBusy = false;
                 }
             });
 
-            // Команда редактирования
             EditOrderCommand = new RelayCommand(obj =>
             {
                 var win = new CreateWindow(this, SelectedOrder);
@@ -76,7 +76,6 @@ namespace OnlineShop.ViewModel
                 }
             }, o => SelectedOrder != null);
 
-            // Команда удаления
             DeleteOrderCommand = new RelayCommand(obj =>
             {
                 if (MessageBox.Show("Удалить заказ?", "Вопрос", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -85,17 +84,25 @@ namespace OnlineShop.ViewModel
                     StoreService.Save(Orders);
                 }
             }, o => SelectedOrder != null);
+
+            SendChatCommand = new RelayCommand(async obj =>
+            {
+                if (string.IsNullOrWhiteSpace(ChatInput)) return;
+                string msg = ChatInput;
+                ChatInput = string.Empty;
+                ChatLog += $"[Вы]: {msg}\n";
+                await StoreService.SendChatMessage(msg);
+            }, o => !string.IsNullOrWhiteSpace(ChatInput));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string n) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
     }
 
-    // Вспомогательный класс для команд
     public class RelayCommand : ICommand
     {
-        private readonly Action<object> _execute;
-        private readonly Func<object, bool> _canExecute;
+        private Action<object> _execute;
+        private Func<object, bool> _canExecute;
         public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
         public RelayCommand(Action<object> e, Func<object, bool> c = null) { _execute = e; _canExecute = c; }
         public bool CanExecute(object p) => _canExecute == null || _canExecute(p);

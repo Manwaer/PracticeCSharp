@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineShop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1000">
 
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding AddOrderCommand}"/>
@@ -46,11 +46,25 @@
                 </ComboBox>
             </StackPanel>
 
-            <Grid DockPanel.Dock="Right" Width="220" Margin="0,10,10,10">
+            <!-- Блок чата с вводом текста -->
+            <Grid DockPanel.Dock="Right" Width="250" Margin="0,10,10,10">
                 <Border BorderBrush="#DDD" BorderThickness="1" CornerRadius="5" Background="#F9F9F9">
                     <DockPanel Margin="10">
                         <TextBlock Text="Чат поддержки" DockPanel.Dock="Top" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        <Button DockPanel.Dock="Bottom" Content="Чат" Height="25" Margin="0,5,0,0" Background="#607D8B" Foreground="White" BorderThickness="0"/>
+
+                        <Grid DockPanel.Dock="Bottom" Margin="0,5,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding ChatInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Height="25" VerticalContentAlignment="Center">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding SendChatCommand}"/>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button Grid.Column="1" Content="➤" Command="{Binding SendChatCommand}" Width="35" Background="#607D8B" Foreground="White" BorderThickness="0"/>
+                        </Grid>
+
                         <TextBox Text="{Binding ChatLog}" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Background="White" BorderBrush="#CCC"/>
                     </DockPanel>
                 </Border>

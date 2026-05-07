@@ -12,15 +12,11 @@ namespace OnlineShop.Services
     public static class StoreService
     {
         private const string FilePath = "store.json";
-
-        // JSON: Сохранение списка заказов
         public static void Save(IEnumerable<Order> orders)
         {
             string json = JsonSerializer.Serialize(orders);
             File.WriteAllText(FilePath, json);
         }
-
-        // JSON: Загрузка списка заказов
         public static List<Order> Load()
         {
             if (!File.Exists(FilePath)) return new List<Order>();
@@ -28,7 +24,6 @@ namespace OnlineShop.Services
             return JsonSerializer.Deserialize<List<Order>>(json) ?? new List<Order>();
         }
 
-        // MMF: Отправка уведомления через разделяемую память
         public static void SendMmfNotify(string message)
         {
             using (MemoryMappedFile mmf = MemoryMappedFile.CreateOrOpen("OrderNotify", 1024))
@@ -41,7 +36,6 @@ namespace OnlineShop.Services
             }
         }
 
-        // Named Pipes: Отправка сообщения в чат (Клиентская часть)
         public static async Task SendChatMessage(string message)
         {
             using (NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "ShopChat", PipeDirection.Out))
@@ -57,7 +51,6 @@ namespace OnlineShop.Services
                 }
                 catch
                 {
-                    // Сервер чата не найден (второе окно не запущено)
                 }
             }
         }

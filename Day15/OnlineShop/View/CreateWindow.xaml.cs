@@ -1,7 +1,6 @@
 ﻿using OnlineShop.ViewModel;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace OnlineShop
@@ -10,7 +9,7 @@ namespace OnlineShop
     {
         private MainWindowViewModel _vm;
         private Order _existing;
-
+        
         public CreateWindow(MainWindowViewModel vm, Order existing = null)
         {
             InitializeComponent();
