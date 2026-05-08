@@ -1,0 +1,154 @@
+﻿<Window x:Class="OnlineShop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineShop"
+        mc:Ignorable="d"
+        Title="Online Shop Manager" Height="550" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding AddOrderCommand}"/>
+        <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding EditOrderCommand}"/>
+        <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding DeleteOrderCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <!-- 1. Анимация появления самих строк -->
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 2. АНИМАЦИЯ ВЫДВИЖЕНИЯ ДЕТАЛЕЙ (RowDetails) -->
+        <Style TargetType="DataGridDetailsPresenter">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!-- Анимация высоты: от 0 до целевого размера -->
+                            <DoubleAnimation Storyboard.TargetProperty="LayoutTransform.ScaleY" 
+                                             From="0" To="1" Duration="0:0:0.2">
+                                <DoubleAnimation.EasingFunction>
+                                    <QuadraticEase EasingMode="EaseOut"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <!-- Плавное проявление -->
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                             From="0" To="1" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <!-- Верхняя панель -->
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10">
+                <Button Content="➕ Новый заказ" Command="{Binding AddOrderCommand}" Width="130" Height="32" Margin="0,0,10,0" Background="#4CAF50" Foreground="White" BorderThickness="0"/>
+                <Button Content="🗑 Удалить" Command="{Binding DeleteOrderCommand}" Width="100" Height="32" Margin="0,0,10,0" Background="#F44336" Foreground="White" BorderThickness="0"/>
+
+                <Separator Margin="10,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+
+                <TextBlock Text="Фильтр:" VerticalAlignment="Center" Margin="10,0,5,0" FontWeight="SemiBold"/>
+                <ComboBox SelectedValuePath="Content" SelectedValue="{Binding SelectedStatusFilter}" Width="150" Height="28" VerticalContentAlignment="Center">
+                    <ComboBoxItem Content="Все"/>
+                    <ComboBoxItem Content="Новый"/>
+                    <ComboBoxItem Content="Оплачен"/>
+                    <ComboBoxItem Content="Доставлен"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Чат справа -->
+            <Grid DockPanel.Dock="Right" Width="260" Margin="5,10,10,10">
+                <Border BorderBrush="#DDD" BorderThickness="1" CornerRadius="8" Background="#FDFDFD">
+                    <DockPanel Margin="8">
+                        <TextBlock Text="💬 Чат поддержки" DockPanel.Dock="Top" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBox Text="{Binding ChatInput, UpdateSourceTrigger=PropertyChanged}" 
+                                 DockPanel.Dock="Bottom" Height="30" VerticalContentAlignment="Center">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SendChatCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <TextBox Text="{Binding ChatLog}" IsReadOnly="True" VerticalScrollBarVisibility="Auto" 
+                                 BorderThickness="0" Background="Transparent" TextWrapping="Wrap" Margin="0,5"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- Таблица заказов -->
+            <DataGrid ItemsSource="{Binding OrdersView}" 
+                      SelectedItem="{Binding SelectedOrder}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True" 
+                      CanUserAddRows="False"
+                      RowDetailsVisibilityMode="VisibleWhenSelected" 
+                      GridLinesVisibility="None" 
+                      Background="White"
+                      BorderThickness="0"
+                      Margin="10">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                    <DataGridTextColumn Header="Клиент" Binding="{Binding Client}" Width="*"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="120"/>
+                    <DataGridTextColumn Header="Сумма" Binding="{Binding Amount, StringFormat={}{0:N2} ₽}" Width="100"/>
+                </DataGrid.Columns>
+
+                <!-- Содержимое деталей (что именно выдвигается) -->
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Border Background="#F7F9FC" Padding="20" BorderBrush="#D1D9E6" BorderThickness="0,1,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock Text="ИНФОРМАЦИЯ О ЗАКАЗЕ" FontSize="10" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
+                                    <TextBlock Text="{Binding Details, TargetNullValue='Дополнительных данных нет'}" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="🖨 Печать" Width="80" Margin="0,0,10,0" Height="30"/>
+                                    <Button Content="🔄 Сменить статус" 
+                                            Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}"
+                                            Padding="15,0" Height="30" Background="#2196F3" Foreground="White" BorderThickness="0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+        </DockPanel>
+
+        <!-- Оверлей загрузки -->
+        <Grid Background="#AA000000" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" Panel.ZIndex="1000">
+            <Border Background="White" CornerRadius="12" Padding="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Пожалуйста, подождите..." FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <ProgressBar IsIndeterminate="True" Width="220" Height="12" Foreground="#4CAF50"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
