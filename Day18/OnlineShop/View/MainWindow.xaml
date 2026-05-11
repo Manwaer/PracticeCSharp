@@ -94,7 +94,7 @@
             </Grid>
 
             <!-- Таблица заказов -->
-            <DataGrid ItemsSource="{Binding OrdersView}" 
+            <DataGrid ItemsSource="{Binding Orders}" 
                       SelectedItem="{Binding SelectedOrder}" 
                       AutoGenerateColumns="False" 
                       IsReadOnly="True" 

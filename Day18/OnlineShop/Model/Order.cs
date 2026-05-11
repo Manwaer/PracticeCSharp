@@ -1,0 +1,54 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace OnlineShop
+{
+    public class Order : INotifyPropertyChanged
+    {
+        private int _id;
+        private string _client;
+        private string _status;
+        private decimal _amount;
+        private string _details;
+
+        public int Id
+        {
+            get => _id;
+            set { _id = value; OnPropertyChanged(); }
+        }
+
+        public string Client
+        {
+            get => _client;
+            set { _client = value; OnPropertyChanged(); }
+        }
+
+        public string Status
+        {
+            get => _status;
+            set { _status = value; OnPropertyChanged(); }
+        }
+
+        public decimal Amount
+        {
+            get => _amount;
+            set { _amount = value; OnPropertyChanged(); }
+        }
+
+        public string Details
+        {
+            get => _details;
+            set { _details = value; OnPropertyChanged(); }
+        }
+
+        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string p = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(p));
+        }
+    }
+}
