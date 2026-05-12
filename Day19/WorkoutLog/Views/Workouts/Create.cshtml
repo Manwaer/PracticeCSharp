@@ -1,0 +1,45 @@
+﻿@model WorkoutLog.Models.Workout
+
+@{
+    ViewData["Title"] = "Добавить тренировку";
+}
+
+<h1>Добавить тренировку</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" type="date" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" placeholder="Бег, Плавание, Тренажерный зал..." />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" type="number" min="1" max="500" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

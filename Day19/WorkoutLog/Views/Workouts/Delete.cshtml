@@ -1,0 +1,28 @@
+﻿@model WorkoutLog.Models.Workout
+
+@{
+    ViewData["Title"] = "Удалить тренировку";
+}
+
+<h1>Удалить тренировку</h1>
+
+<h3 class="text-danger">Вы уверены, что хотите удалить эту тренировку?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Date)</dt>
+        <dd class="col-sm-9">@Model.Date.ToString("dd.MM.yyyy")</dd>
+        
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Type)</dt>
+        <dd class="col-sm-9">@Model.Type</dd>
+        
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Duration)</dt>
+        <dd class="col-sm-9">@Model.Duration минут</dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
