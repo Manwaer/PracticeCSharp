@@ -1,4 +1,4 @@
-namespace WorkoutLog.Models
+namespace WorkoutLog.ViewModels
 {
     public class ErrorViewModel
     {

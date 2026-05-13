@@ -26,7 +26,7 @@ namespace OnlineShop.Data
             await _context.OrderItems.AddAsync(item);
         }
 
-        public async Task UpdateOrderItemAsync(OrderItem item)
+        public async Task UpdateOrderItemAsync(OrderItem item) 
         {
             _context.OrderItems.Update(item);
             await Task.CompletedTask;

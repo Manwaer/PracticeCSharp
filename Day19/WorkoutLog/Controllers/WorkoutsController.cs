@@ -1,157 +1,144 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WorkoutLog.Data;
-using WorkoutLog.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using WorkoutLog.Services;
+using WorkoutLog.ViewModels;
 
 namespace WorkoutLog.Controllers
 {
     public class WorkoutsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IWorkoutService _workoutService;
 
-        public WorkoutsController(ApplicationDbContext context)
+        // DI: внедрение сервиса через конструктор
+        public WorkoutsController(IWorkoutService workoutService)
         {
-            _context = context;
+            _workoutService = workoutService;
         }
 
-        // GET: Workouts
-        public async Task<IActionResult> Index()
+        // GET: /Workouts?filterType=Бег
+        public async Task<IActionResult> Index(string? filterType)
         {
-            var workouts = await _context.Workouts
-                .OrderByDescending(w => w.Date)
-                .ToListAsync();
+            IEnumerable<WorkoutLog.Models.Workout> workouts;
+
+            if (!string.IsNullOrWhiteSpace(filterType))
+            {
+                // Фильтрация по типу через сервис
+                workouts = await _workoutService.GetByTypeAsync(filterType);
+                ViewBag.CurrentFilter = filterType;
+            }
+            else
+            {
+                workouts = await _workoutService.GetAllAsync();
+                ViewBag.CurrentFilter = string.Empty;
+            }
+
+            // Передаём доступные типы для выпадающего списка
+            ViewBag.AvailableTypes = await _workoutService.GetAllTypesAsync();
+
             return View(workouts);
         }
 
-        // GET: Workouts/Day/2024-01-15
+        // GET: /Workouts/Day/2024-01-15
         [Route("Workouts/Day/{date}")]
         public async Task<IActionResult> Day(string date)
         {
             if (!DateTime.TryParse(date, out DateTime parsedDate))
-            {
                 return BadRequest("Неверный формат даты");
-            }
 
-            var workouts = await _context.Workouts
-                .Where(w => w.Date.Date == parsedDate.Date)
-                .OrderBy(w => w.Type)
-                .ToListAsync();
-
+            var workouts = await _workoutService.GetByDateAsync(parsedDate);
             ViewBag.SelectedDate = parsedDate;
+
             return View(workouts);
         }
 
-        // GET: Workouts/Create
+        // GET: /Workouts/Create
         public IActionResult Create()
         {
-            var workout = new Workout
+            var viewModel = new WorkoutViewModel
             {
                 Date = DateTime.Today
             };
-            return View(workout);
+            return View(viewModel);
         }
 
-        // POST: Workouts/Create
+        // POST: /Workouts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Date,Type,Duration")] Workout workout)
+        public async Task<IActionResult> Create(WorkoutViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(workout);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(workout);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            await _workoutService.CreateAsync(viewModel);
+
+            // Сообщение об успехе через TempData
+            TempData["SuccessMessage"] = $"Тренировка \"{viewModel.Type}\" успешно добавлена!";
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Workouts/Edit/5
+        // GET: /Workouts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var workout = await _context.Workouts.FindAsync(id);
+            var workout = await _workoutService.GetByIdAsync(id.Value);
             if (workout == null)
-            {
                 return NotFound();
-            }
-            return View(workout);
+
+            // Конвертируем модель в ViewModel
+            var viewModel = WorkoutViewModel.FromModel(workout);
+            return View(viewModel);
         }
 
-        // POST: Workouts/Edit/5
+        // POST: /Workouts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Type,Duration")] Workout workout)
+        public async Task<IActionResult> Edit(int id, WorkoutViewModel viewModel)
         {
-            if (id != workout.Id)
-            {
+            if (id != viewModel.Id)
                 return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(workout);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WorkoutExists(workout.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(workout);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var updated = await _workoutService.UpdateAsync(viewModel);
+            if (!updated)
+                return NotFound();
+
+            // Сообщение об успехе через TempData
+            TempData["SuccessMessage"] = $"Тренировка \"{viewModel.Type}\" успешно обновлена!";
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Workouts/Delete/5
+        // GET: /Workouts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var workout = await _context.Workouts
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var workout = await _workoutService.GetByIdAsync(id.Value);
             if (workout == null)
-            {
                 return NotFound();
-            }
 
             return View(workout);
         }
 
-        // POST: Workouts/Delete/5
+        // POST: /Workouts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var workout = await _context.Workouts.FindAsync(id);
-            if (workout != null)
-            {
-                _context.Workouts.Remove(workout);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
-        }
+            var workout = await _workoutService.GetByIdAsync(id);
+            var typeName = workout?.Type ?? "Тренировка";
 
-        private bool WorkoutExists(int id)
-        {
-            return _context.Workouts.Any(e => e.Id == id);
+            await _workoutService.DeleteAsync(id);
+
+            // Сообщение через TempData
+            TempData["SuccessMessage"] = $"\"{typeName}\" успешно удалена!";
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

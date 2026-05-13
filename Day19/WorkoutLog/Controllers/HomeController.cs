@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using WorkoutLog.Models;
+using WorkoutLog.ViewModels;
 
 namespace WorkoutLog.Controllers
 {

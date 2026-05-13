@@ -4,25 +4,70 @@
     ViewData["Title"] = "Удалить тренировку";
 }
 
-<h1>Удалить тренировку</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-<h3 class="text-danger">Вы уверены, что хотите удалить эту тренировку?</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Date)</dt>
-        <dd class="col-sm-9">@Model.Date.ToString("dd.MM.yyyy")</dd>
-        
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Type)</dt>
-        <dd class="col-sm-9">@Model.Type</dd>
-        
-        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Duration)</dt>
-        <dd class="col-sm-9">@Model.Duration минут</dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Удалить" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
-    </form>
+            <h1 class="mb-4 text-danger">🗑️ Удалить тренировку</h1>
+            <div class="alert alert-danger">
+                ⚠️ Вы уверены, что хотите удалить эту тренировку?
+                Это действие нельзя отменить!
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(m => m.Date)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Date.ToString("dd.MM.yyyy")
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(m => m.Type)
+                        </dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">@Model.Type</span>
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(m => m.Exercise)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @(Model.Exercise ?? "—")
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(m => m.Duration)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Duration минут
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Notes))
+                        {
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(m => m.Notes)
+                            </dt>
+                            <dd class="col-sm-8">@Model.Notes</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger px-4">
+                        🗑️ Да, удалить
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        ↩️ Отмена
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>
