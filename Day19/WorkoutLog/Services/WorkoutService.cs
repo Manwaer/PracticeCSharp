@@ -139,5 +139,59 @@ namespace WorkoutLog.Services
                     .ToDictionary(g => g.Key, g => g.Count())
             };
         }
+        // Добавьте этот метод в класс WorkoutService
+        public async Task<WeeklyStatsViewModel> GetWeeklyStatsAsync(int weekOffset = 0)
+        {
+            // 1. Определение границ недели (Понедельник - Воскресенье)
+            var today = DateTime.Today.AddDays(weekOffset * 7);
+            // Вычисляем понедельник текущей недели
+            int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
+            var startOfWeek = today.AddDays(-1 * diff).Date;
+            var endOfWeek = startOfWeek.AddDays(6).Date;
+
+            // 2. Запрос к БД
+            var workouts = await _context.Workouts
+                .Where(w => w.Date.Date >= startOfWeek && w.Date.Date <= endOfWeek)
+                .ToListAsync();
+
+            // 3. Подготовка структуры для графика по дням (чтобы пустые дни тоже отображались)
+            var daysMap = new Dictionary<string, DateTime>
+    {
+        { "Пн", startOfWeek },
+        { "Вт", startOfWeek.AddDays(1) },
+        { "Ср", startOfWeek.AddDays(2) },
+        { "Чт", startOfWeek.AddDays(3) },
+        { "Пт", startOfWeek.AddDays(4) },
+        { "Сб", startOfWeek.AddDays(5) },
+        { "Вс", startOfWeek.AddDays(6) }
+    };
+
+            var durationByDay = new Dictionary<string, int>();
+            foreach (var day in daysMap)
+            {
+                // Суммируем длительность тренировок для конкретного дня
+                durationByDay[day.Key] = workouts
+                    .Where(w => w.Date.Date == day.Value)
+                    .Sum(w => w.Duration);
+            }
+
+            // 4. Группировка по типам
+            var workoutsByType = workouts
+                .GroupBy(w => w.Type)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            // 5. Возврат ViewModel
+            return new WeeklyStatsViewModel
+            {
+                StartOfWeek = startOfWeek,
+                EndOfWeek = endOfWeek,
+                WeekOffset = weekOffset,
+                TotalWorkouts = workouts.Count,
+                TotalDuration = workouts.Sum(w => w.Duration),
+                MaxDailyDuration = durationByDay.Values.DefaultIfEmpty(0).Max(),
+                DurationByDay = durationByDay,
+                WorkoutsByType = workoutsByType
+            };
+        }
     }
 }

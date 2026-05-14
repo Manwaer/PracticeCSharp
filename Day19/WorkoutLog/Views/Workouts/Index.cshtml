@@ -52,9 +52,14 @@
         </div>
     </div>
 
-    <div class="mb-3">
+    <!-- Замените существующий блок кнопок на этот -->
+    <div class="mb-4 d-flex gap-2">
         <a asp-action="Create" class="btn btn-success">
             ➕ Добавить тренировку
+        </a>
+        <!-- НОВАЯ КНОПКА -->
+        <a asp-action="WeeklyStats" class="btn btn-info text-white">
+            📊 Недельная статистика
         </a>
     </div>
 

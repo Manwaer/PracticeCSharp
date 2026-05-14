@@ -34,5 +34,6 @@ namespace WorkoutLog.Services
 
         // Получить статистику за период
         Task<WorkoutStatsViewModel> GetStatsAsync(DateTime from, DateTime to);
+        Task<WeeklyStatsViewModel> GetWeeklyStatsAsync(int weekOffset = 0);
     }
 }

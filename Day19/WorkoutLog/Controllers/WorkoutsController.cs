@@ -140,5 +140,11 @@ namespace WorkoutLog.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        // GET: /Workouts/WeeklyStats?weekOffset=0
+        public async Task<IActionResult> WeeklyStats(int weekOffset = 0)
+        {
+            var stats = await _workoutService.GetWeeklyStatsAsync(weekOffset);
+            return View(stats);
+        }
     }
 }
